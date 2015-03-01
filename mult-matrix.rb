@@ -1,7 +1,6 @@
 def matrix_mult(a, b)
   n = a.length
   final = []
-  c, d, e, f, g, h =0,0,0,0,0,0
   n.times { final << [] }
   final.each{|line| n.times{ line << 0}}
   (0...n).each do |e|
