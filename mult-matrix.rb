@@ -14,9 +14,6 @@ def matrix_mult(a, b)
 end
 
 
-
-
-
 puts "When n is four this method returns #{matrix_mult([[1, 2], [3, 2]], [[3, 2], [1, 1]])} which should be [[5, 4], [11, 8]] and means it works? #{matrix_mult([[1, 2], [3, 2]], [[3, 2], [1, 1]]) == [[5, 4], [11, 8]]}"
 
 puts "When n is four this method returns #{matrix_mult([[1, 2, 3], [4, 5, 6], [7, 8 ,9]], [[1, 0, 0], [0, 1, 0], [0,0,1]])} which should be [[1, 2, 3], [4, 5, 6], [7, 8 ,9]] and means it works? #{matrix_mult([[1, 2, 3], [4, 5, 6], [7, 8 ,9]], [[1, 0, 0], [0, 1, 0], [0,0,1]]) == [[1, 2, 3], [4, 5, 6], [7, 8 ,9]]}"
