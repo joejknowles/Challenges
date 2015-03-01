@@ -1,29 +1,15 @@
 def matrix_mult(a, b)
-  count = 0
   n = a.length
   final = []
   c, d, e, f, g, h =0,0,0,0,0,0
   n.times { final << [] }
   final.each{|line| n.times{ line << 0}}
-  n.times do
-    n.times do
-      n.times do
-        count += 1
-        final[c][d] += a[e][f] * b[g][h]
-        f+=1
-        g+=1
+  (0...n).each do |e|
+    (0...n).each do |d|
+      (0...n).each do |f|
+        final[e][d] += a[e][f] * b[f][d]
       end
-      d+=1
-      h+=1
-      f = 0 if f % n == 0
-      g = 0 if g % n == 0
-      h = 0 if h % n == 0
-      d = 0 if d % n == 0
     end
-    e += 1
-    c += 1
-    c = 0 if c % n == 0
-    e = 0 if e % n == 0
   end
   final
 end
