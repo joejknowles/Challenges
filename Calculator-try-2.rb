@@ -1,0 +1,32 @@
+class Calculator
+  def evaluate(string)
+
+    array = string.split(' ')
+    array = all_mults(array)
+    #array = all_divs(array)
+    array
+    #string[0].to_i
+  end
+
+  def all_mults(array)
+    new_array = array.each_with_index.inject([]) do |new_array, (character, position)|
+      if character != "*" && array[position-1] != "*" && array[position+1] != "*"
+        new_array << character
+      elsif character == '*' && array[position - 2] == '*'
+        new_array << character
+        new_array << array[position + 1]
+      elsif character == '*'
+        new_array << (array[position-1].to_i * array[position+1].to_i).to_s
+      end
+      new_array
+    end
+    new_array.join.scan('*').length > 0 ? all_mults(new_array) : new_array
+  end
+end
+
+
+
+
+
+
+puts "calc evaluates to:\n#{Calculator.new.evaluate('2 * 3 * 6 * 7 * 7 * 10 * 90 * 90 * 2 * 6 * 3')}"
