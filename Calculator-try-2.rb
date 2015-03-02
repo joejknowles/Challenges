@@ -10,13 +10,18 @@ class Calculator
 
   def all_mults(array)
     new_array = array.each_with_index.inject([]) do |new_array, (character, position)|
-      if character != "*" && array[position-1] != "*" && array[position+1] != "*"
+      if character != "*" && array[position-1] != "*" && array[position+1] != "*" &&  character != "/" && array[position-1] != "/" && array[position+1] != "/"
         new_array << character
-      elsif character == '*' && array[position - 2] == '*'
+      elsif character == '*' && (array[position - 2] == '*' || array[position - 2] == '/')
         new_array << character
         new_array << array[position + 1]
       elsif character == '*'
         new_array << (array[position-1].to_i * array[position+1].to_i).to_s
+      elsif character == '/' && (array[position - 2] == '*' || array[position - 2] == '/')
+        new_array << character
+        new_array << array[position + 1]
+      elsif character == '/'
+        new_array << (array[position-1].to_i / array[position+1].to_i).to_s
       end
       new_array
     end
@@ -29,4 +34,4 @@ end
 
 
 
-puts "calc evaluates to:\n#{Calculator.new.evaluate('2 * 3 * 6 * 7 * 7 * 10 * 90 * 90 * 2 * 6 * 3')}"
+puts "calc evaluates to:\n#{Calculator.new.evaluate("2 / 2 + 3 * 4 - 6")}"
