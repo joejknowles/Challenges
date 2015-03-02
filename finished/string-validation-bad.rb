@@ -7,12 +7,12 @@ def validation(string)
   elsif !(string.strip =~ /\D/) && string.to_i.to_s.length < 9
     return string.to_i + 1
   end
-  return 'invalid'
+  'invalid'
 end
 puts validation('       ') == 1
 puts validation(' 112222223 ') == 112222224
 puts validation('abc4') == 'invalid'
-puts '123s'
+
 
 
 =begin

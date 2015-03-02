@@ -3,10 +3,10 @@ def matrix_mult(a, b)
   final = []
   n.times { final << [] }
   final.each{|line| n.times{ line << 0}}
-  (0...n).each do |e|
+  (0...n).each do |y_fa|
     (0...n).each do |d|
       (0...n).each do |f|
-        final[e][d] += a[e][f] * b[f][d]
+        final[y_fa][d] += a[y_fa][f] * b[f][d]
       end
     end
   end

@@ -41,7 +41,6 @@ def snail(array)
   end
   switch = !switch
 
-
   puts "Final *FINAL* array is #{final}."
 end
 
