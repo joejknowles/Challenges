@@ -29,7 +29,7 @@ class Calculator
 
   def all_adds(array)
     new_array = array.each_with_index.inject([]) do |new_array, (character, position)|
-      p new_array
+      p "new_array is #{new_array}, character is #{character}, position is #{position}"
       if character != "+" && array[position-1] != "+" && array[position+1] != "+" &&  character != "-" && array[position-1] != "-" && array[position+1] != "-"
         new_array << character
       elsif character == '+' && (array[position - 2] == '+' || array[position - 2] == '-')
@@ -37,7 +37,7 @@ class Calculator
         new_array << array[position + 1]
       elsif character == '+'
         new_array << (array[position-1].to_i + array[position+1].to_i).to_s
-      elsif character == '-' && (array[position - 2] == '+' || array[position - 2] == '+')
+      elsif character == '-' && (array[position - 2] == '+' || array[position - 2] == '-')
         new_array << character
         new_array << array[position + 1]
       elsif character == '-'
@@ -49,4 +49,4 @@ class Calculator
   end
 end
 
-puts "calc evaluates to:\n#{Calculator.new.evaluate("10 - 90 + 9 + 10 - 90")}"
+puts "calc evaluates to:\n#{Calculator.new.evaluate("2 - 3 - 9 - 4")}"
