@@ -18,7 +18,7 @@ class Calculator
         new_array << array[position + 1]
       elsif character == '+'
         new_array << (array[position-1].to_i + array[position+1].to_i).to_s
-      elsif character == '-' && (array[position - 2] == '+' || array[position - 2] == '+')
+      elsif character == '-' && (array[position - 2] == '+' || array[position - 2] == '-')
         new_array << character
         new_array << array[position + 1]
       elsif character == '-'

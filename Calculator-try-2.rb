@@ -23,7 +23,7 @@ class Calculator
       end
       new_array
     end
-    new_array.join.scan('*').length > 0 || new_array.join.scan('/').length > 0 ? all_mults(new_array) : new_array
+    new_array.include?('*') || new_array.include?('/') ? all_mults(new_array) : new_array
   end
 
 
@@ -45,8 +45,8 @@ class Calculator
       end
       new_array
     end
-    new_array.join.scan('+').length > 0 || new_array.include?('-') ? all_adds(new_array) : new_array
+    new_array.include?('+') || new_array.include?('-') ? all_adds(new_array) : new_array
   end
 end
 
-puts "calc evaluates to:\n#{Calculator.new.evaluate("2 - 3 - 9 - 4")}"
+puts "calc evaluates to:\n#{Calculator.new.evaluate("2 - 3 - 4")}"
