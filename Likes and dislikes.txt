@@ -1,0 +1,24 @@
+Likes
+Having the option to pair, so we can choose the best combination for ourselves
+All like RubyMonk
+TDD in RM
+Being able to talk to Sam in depth in a smaller group (although there was a little confusion with pairing)
+Having to explain things in a group is a good challenge (Some find it a bit too difficult to explain things well / to know if you're explaining well)
+
+
+Dislikes
+
+Finding difficult learning and pairing as we are in different levels
+Awkward giving a pair, maybe would be an option choose the own pair
+Possibly order of lrthw and RM could be better other way around
+
+
+Learnt
+Learning and pairing without a break is exhausting
+TDD in RM
+Probably already a method that does that
+Better understanding of OOP
+
+Would like to learn:
+Unsure how much we should be doing outside course
+How to explain things well
