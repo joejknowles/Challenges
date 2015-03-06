@@ -43,6 +43,10 @@ class Board
   end
 
   def mark_cell(position, x_or_o)
+    unless get_cell(position).mark == ' '
+      puts "Oops. that square's taken, try again!"
+      return nil
+    end
     @turn_count += 1
     get_cell(position).mark = x_or_o
   end
@@ -52,10 +56,10 @@ end
 #-------------------
 class Game
   def initialize
-    @end = false
     @current_player, @other_player, save = start_game
     @board = Board.new(save)
     intro
+    @begin = true
     next_turn
   end
 
@@ -74,7 +78,7 @@ class Game
   def start_game
     puts "would you like to start a new game? y/n"
     save = get_input
-    save = {} if save == 'y'
+    save = {} #if save == 'y'
     puts "Please enter your name then press enter, and repeat for the other player"
     name_one, name_two = [get_input, get_input].shuffle
     x_or_o = ["X", "O"].shuffle
@@ -89,7 +93,7 @@ class Game
     print_board
     puts "Hey, #{name}, it's your turn, you're '#{x_or_o}'s. Put your '#{x_or_o}' down on the board by choosing a number between 1 and 9. (Type 'rules', 'grid' or 'key' if you need help!"
     position = get_input.to_i
-    @board.mark_cell(position, x_or_o)
+    next_turn unless @board.mark_cell(position, x_or_o)
     check_end
     switch_player
     next_turn
@@ -105,6 +109,12 @@ class Game
     if input == 'grid' || input == 'key' || input == 'rules'
       puts "Just enter a number to put your mark in these places:"
       print_layout
+      check_end
+      next_turn
+    elsif input == 'exit' || input == 'quit'
+      exit
+    elsif @begin && input!= 'y' && input!= 'n' && (input.to_i > 9 || input.to_i < 1)
+      puts "I don't understand that! Try again"
       check_end
       next_turn
     end
@@ -139,18 +149,15 @@ class Game
     print_board
     puts "WOW, #{@current_player.name}, you actually won."
     puts "Would you like to play again? y/n"
-    get_input == 'y' ? game = Game.new : exit
+    get_input == 'y' ? Game.new : exit
   end
 
   def end_draw
     print_board
     puts "Looks like this one's a draw."
     puts "Would you like to play again? y/n"
-    get_input == 'y' ? game = Game.new : exit
+    get_input == 'y' ? Game.new : exit
   end
-
 end
 
-
-
-game = Game.new
+Game.new
