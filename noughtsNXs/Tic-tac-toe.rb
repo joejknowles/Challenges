@@ -94,11 +94,25 @@ class Game
     name = @current_player.name
     x_or_o = @current_player.x_or_o
     print_board
-    puts "Hey, #{name}, it's your turn, you're '#{x_or_o}'s. Put your '#{x_or_o}' down on the board by choosing a number between 1 and 9. (Type 'rules', 'grid' or 'key' if you need help!)"
+    puts "Hey, #{name}, it's your turn, you're '#{x_or_o}'s. Put your '#{x_or_o}' down on the board by choosing a number between 1 and 9. (Type 'help' or 'options' for a list of options.)"
     position = get_input.to_i
     next_turn unless @board.mark_cell(position, x_or_o)
     check_end
     switch_player
+    next_turn
+  end
+
+  def help
+    35.times{print"#"}
+    print "HELP"
+    35.times{print"#"}
+    puts ""
+    puts "Type 'grid' or 'key' if you need reminding where the numbers go."
+    puts "Type 'exit' or 'quit' to exit without saving, or 'save' to save your current game."
+    35.times{print"#"}
+    print "HELP"
+    35.times{print"#"}
+    puts ""
     next_turn
   end
 
@@ -116,7 +130,9 @@ class Game
       check_end
       next_turn
     elsif check_input == 'exit' || check_input == 'quit'
-      exit
+      end_game
+    elsif @begin && (check_input == 'help' || check_input == 'options')
+      help
     elsif @begin && check_input == 'save'
       save_game
     elsif @begin && check_input!= 'y' && check_input!= 'n' && (input.to_i > 9 || input.to_i < 1)
