@@ -135,6 +135,7 @@ class Game
       print "\n"
     end
   end
+
   def print_layout
     print "\n"
     first = 1
@@ -164,12 +165,14 @@ class Game
     get_input == 'y' ? Game.new : exit
   end
   def save_game
+    puts "Saved as file:"
+    puts "#{@current_player.name}_and_#{@other_player.name}_turn_#{@board.turn_count+1}.xml"
     $game_save = Ox.dump(self)
-
     puts "Your game has been successfully saved."
     end_game
   end
   def load_game
+
     Ox.parse_obj($game_save).next_turn
   end
 end
