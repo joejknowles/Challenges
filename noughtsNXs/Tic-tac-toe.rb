@@ -1,3 +1,5 @@
+require 'ox'
+
 #-------------------
 # CELL
 #-------------------
@@ -76,11 +78,12 @@ class Game
   end
 
   def start_game
-    puts "would you like to start a new game? y/n"
+    puts "would you like to start a new game or load a previous game? 'new'/'load'"
     save = get_input
-    save = {} #if save == 'y'
+    save == 'load' ?  Ox.parse_obj($load).next_turn : save = {}
     puts "Please enter your name then press enter, and repeat for the other player"
-    name_one, name_two = [get_input, get_input].shuffle
+    names = [get_input, get_input]
+    name_one, name_two = names.shuffle
     x_or_o = ["X", "O"].shuffle
     player_one = Player.new({name: name_one, x_or_o: x_or_o[0]})
     player_two = Player.new({name: name_two, x_or_o: x_or_o[1]})
@@ -113,6 +116,10 @@ class Game
       next_turn
     elsif input == 'exit' || input == 'quit'
       exit
+    elsif @begin && input == 'save'
+      $load = Ox.dump(self)
+      puts "Your game has been successfully saved."
+      end_game
     elsif @begin && input!= 'y' && input!= 'n' && (input.to_i > 9 || input.to_i < 1)
       puts "I don't understand that! Try again"
       check_end
@@ -120,7 +127,6 @@ class Game
     end
     input
   end
-
   def print_board
     print "\n"
     (0..2).each do |line|
@@ -138,23 +144,22 @@ class Game
       print "\n"
     end
   end
-
   def check_end
     x_or_o = @current_player.x_or_o
     end_win if @board.grid.any? {|row| row.all?{ |mark| mark.to_s == x_or_o}} || @board.grid.transpose.any? {|row| row.all?{ |mark| mark.to_s == x_or_o}} || @board.grid.each_with_index.map{|row, index| row[index]}.all?{ |mark| mark.to_s == x_or_o}  || @board.grid.each_with_index.map{|row, index| row[2-index]}.all?{ |mark| mark.to_s == x_or_o}
     end_draw if @board.turn_count == 9
   end
-
   def end_win
     print_board
     puts "WOW, #{@current_player.name}, you actually won."
-    puts "Would you like to play again? y/n"
-    get_input == 'y' ? Game.new : exit
+    end_game
   end
-
   def end_draw
     print_board
     puts "Looks like this one's a draw."
+    end_game
+  end
+  def end_game
     puts "Would you like to play again? y/n"
     get_input == 'y' ? Game.new : exit
   end
