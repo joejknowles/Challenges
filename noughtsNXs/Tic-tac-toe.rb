@@ -78,10 +78,10 @@ class Game
   end
 
   def start_game
-    puts "would you like to start a new game or load a previous game? 'new'/'load'"
+    puts "Would you like to start a new game or load a previous game? 'new'/'load'."
     save = get_input.downcase
     save == 'load' ?  load_game : save = {}
-    puts "Please enter your name then press enter, and repeat for the other player"
+    puts "Please enter your name then press enter, and repeat for the other player."
     names = [get_input, get_input]
     name_one, name_two = names.shuffle
     x_or_o = ["X", "O"].shuffle
@@ -162,18 +162,39 @@ class Game
   end
   def end_game
     puts "Would you like to play again? y/n"
-    get_input == 'y' ? Game.new : exit
+    print '>> '
+    case gets.chomp
+    when 'y'
+      Game.new
+    when 'n'
+       exit
+    end
+    puts " I didn't quite catch that!"
+    end_game
   end
   def save_game
-    puts "Saved as file:"
-    puts "#{@current_player.name}_and_#{@other_player.name}_turn_#{@board.turn_count+1}.xml"
+    file_name = "./game_saves/#{@current_player.name.split(' ').join('_')}_and_#{@other_player.name.split(' ').join('_')}_turn_#{@board.turn_count+1}"
+    file_name = file_name << '_again' while Dir['./game_saves/*.xml'].include?(file_name + '.xml')
+    file_name = file_name << ".xml"
+    puts "Saved as file: #{file_name[13..-1]}"
+    File.open(file_name, 'w'){|file| file.write(Ox.dump(self))}
     $game_save = Ox.dump(self)
     puts "Your game has been successfully saved."
     end_game
   end
   def load_game
-
-    Ox.parse_obj($game_save).next_turn
+    puts "Choose from one of your save files by typing the number:"
+    all_save_files = Dir['./game_saves/*.xml']
+    if all_save_files.length == 0
+      puts "You don't have any saved games. Choose new game next time."
+      Game.new
+    end
+    all_save_files.each_with_index{|file, index| puts "#{index+1}: #{file[13..-1]}"}
+    load_choice = get_input.to_i - 1
+    game_save = all_save_files[load_choice]
+    game_save_xml = 0
+    File.open(game_save, 'r'){|file| game_save_xml = file.read}
+    Ox.parse_obj(game_save_xml).next_turn
   end
 end
 
