@@ -46,7 +46,7 @@ class Board
 
   def mark_cell(position, x_or_o)
     unless get_cell(position).mark == ' '
-      puts "Oops. that square's taken, try again!"
+      puts "Oops. That square's taken, try another one!"
       return nil
     end
     @turn_count += 1
@@ -79,8 +79,8 @@ class Game
 
   def start_game
     puts "would you like to start a new game or load a previous game? 'new'/'load'"
-    save = get_input
-    save == 'load' ?  Ox.parse_obj($load).next_turn : save = {}
+    save = get_input.downcase
+    save == 'load' ?  load_game : save = {}
     puts "Please enter your name then press enter, and repeat for the other player"
     names = [get_input, get_input]
     name_one, name_two = names.shuffle
@@ -94,7 +94,7 @@ class Game
     name = @current_player.name
     x_or_o = @current_player.x_or_o
     print_board
-    puts "Hey, #{name}, it's your turn, you're '#{x_or_o}'s. Put your '#{x_or_o}' down on the board by choosing a number between 1 and 9. (Type 'rules', 'grid' or 'key' if you need help!"
+    puts "Hey, #{name}, it's your turn, you're '#{x_or_o}'s. Put your '#{x_or_o}' down on the board by choosing a number between 1 and 9. (Type 'rules', 'grid' or 'key' if you need help!)"
     position = get_input.to_i
     next_turn unless @board.mark_cell(position, x_or_o)
     check_end
@@ -109,24 +109,24 @@ class Game
   def get_input
     print '>> '
     input = gets.chomp
-    if input == 'grid' || input == 'key' || input == 'rules'
+    check_input = input.downcase
+    if check_input == 'grid' || check_input == 'key' || check_input == 'rules'
       puts "Just enter a number to put your mark in these places:"
       print_layout
       check_end
       next_turn
-    elsif input == 'exit' || input == 'quit'
+    elsif check_input == 'exit' || check_input == 'quit'
       exit
-    elsif @begin && input == 'save'
-      $load = Ox.dump(self)
-      puts "Your game has been successfully saved."
-      end_game
-    elsif @begin && input!= 'y' && input!= 'n' && (input.to_i > 9 || input.to_i < 1)
+    elsif @begin && check_input == 'save'
+      save_game
+    elsif @begin && check_input!= 'y' && check_input!= 'n' && (input.to_i > 9 || input.to_i < 1)
       puts "I don't understand that! Try again"
       check_end
       next_turn
     end
     input
   end
+
   def print_board
     print "\n"
     (0..2).each do |line|
@@ -162,6 +162,15 @@ class Game
   def end_game
     puts "Would you like to play again? y/n"
     get_input == 'y' ? Game.new : exit
+  end
+  def save_game
+    $game_save = Ox.dump(self)
+
+    puts "Your game has been successfully saved."
+    end_game
+  end
+  def load_game
+    Ox.parse_obj($game_save).next_turn
   end
 end
 
