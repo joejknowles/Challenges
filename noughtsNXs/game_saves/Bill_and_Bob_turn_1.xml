@@ -1,11 +1,11 @@
 <o c="Game">
   <o a="@current_player" c="Player">
-    <s a="@x_or_o">X</s>
-    <s a="@name">Joey</s>
+    <s a="@x_or_o">O</s>
+    <s a="@name">Bill</s>
   </o>
   <o a="@other_player" c="Player">
-    <s a="@x_or_o">O</s>
-    <s a="@name">Joe</s>
+    <s a="@x_or_o">X</s>
+    <s a="@name">Bob</s>
   </o>
   <o a="@board" c="Board">
     <a a="@grid">
