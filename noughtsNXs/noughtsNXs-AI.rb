@@ -87,7 +87,7 @@ class Game
     puts "Please enter your name then press enter."
      #Weird running .shuffle first here?
     name_one = get_input ###################
-    name_two = 'Hal_9000'
+    name_two = ['Hal 9000', 'Skynet'].sample
     x_or_o = ["X", "O"].shuffle
     player_one, player_two = [Player.new({name: name_one, x_or_o: x_or_o[0]}), Computer.new({name: name_two, x_or_o: x_or_o[1]})].shuffle
     [player_one, player_two, save]
