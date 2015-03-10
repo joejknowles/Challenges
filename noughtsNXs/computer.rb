@@ -33,7 +33,6 @@ class Computer < Player
     sequence.each do |position|
         cell = board.get_cell(position)
         if cell.to_s == ' ' && relevant_lines(cell, winning_lines).any?{ |line| line.count{ |mark| mark.to_s == @x_or_o} == 2}
-          puts 2
           choice = position
           break
         end
@@ -43,7 +42,6 @@ class Computer < Player
       sequence.each do |position|
         cell = board.get_cell(position)
         if cell.to_s == ' ' && relevant_lines(cell, winning_lines).any?{ |line| line.count{ |mark| mark.to_s == @other_mark} == 2}
-          puts 1
           choice = position
           break
         end
@@ -54,7 +52,6 @@ class Computer < Player
         sequence.each do |position|
         cell = board.get_cell(position)
         if cell.to_s == ' ' && relevant_lines(cell, winning_lines).any?{ |line| line.any?{ |mark| mark.to_s == @x_or_o} && line.count{ |mark| mark.to_s == ' '} == 2}
-          puts 3
           choice = position
           break
         end
@@ -64,7 +61,6 @@ class Computer < Player
     unless choice
       sequence.each do |position|
         if board.get_cell(position).mark ==' '
-          puts 5
           choice = position
           break
         end
