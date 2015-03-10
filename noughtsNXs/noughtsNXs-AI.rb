@@ -9,7 +9,7 @@ require './board'
 class Game
 
   def initialize
-    @current_player, @other_player, save = start_game
+    @current_player, @other_player = start_game
     @board = Board.new#(save)
     intro
     @begin = true
@@ -30,15 +30,15 @@ class Game
 
   def start_game
     puts "Would you like to start a new game or load a previous game? 'new'/'load'."
-    save = get_input.downcase
-    save == 'load' ?  load_game : save = {}
+    load = get_input.downcase
+    load_game if load == 'load'
     puts "Please enter your name then press enter."
      #Weird running .shuffle first here?
     name_one = get_input ###################
     name_two = ['Hal 9000', 'Skynet', 'Cortana', 'kitt', 'Bender', 'GLaDOS', 'GLaDOS', 'GLaDOS', "Her"].sample
     x_or_o = ["X", "O"].shuffle
     player_one, player_two = [Player.new({name: name_one, x_or_o: x_or_o[0]}), Computer.new({name: name_two, x_or_o: x_or_o[1], other_mark: x_or_o[0]})].shuffle
-    [player_one, player_two, save]
+    [player_one, player_two]
   end
 
   def next_turn
@@ -120,9 +120,10 @@ class Game
   end
 
   def winning_lines
-    lines = @board.grid.clone
-    @board.grid.transpose.each{|row| lines << row}
-    lines << @board.grid.each_with_index.map{|row, index| row[index]}
+    lines = []#creates empty array for all lines
+    @board.grid.each{|row| lines << row} #Adds hor
+    @board.grid.transpose.each{|collumn| lines << collumn} #adds vert
+    lines << @board.grid.each_with_index.map{|row, index| row[index]} #adds diags
     lines << @board.grid.each_with_index.map{|row, index| row[2 - index]}
   end
 

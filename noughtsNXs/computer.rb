@@ -19,14 +19,13 @@ class Computer < Player
     @other_mark = settings_hsh.fetch(:other_mark, 'O')
   end
 
-  def linesWithCurrentCellIn?(winning_lines, position)
-    'not done this bit yet'
+  def relevant_lines(cell, winning_lines)
+    winning_lines.select{|line| line.include?(cell)}
   end
-
 
   def choose_move(board, winning_lines)
     choice = nil
-    p linesWithCurrentCellIn?(winning_lines, 5)
+    p relevant_lines(board.get_cell(5), winning_lines)
 
 
     # This part checks for any winning moves
