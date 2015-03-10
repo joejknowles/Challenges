@@ -2,6 +2,7 @@
 #-------------------
 # PLAYER
 #-------------------
+
 class Player
   attr_reader :x_or_o, :name
   def initialize(settings_hsh)
@@ -9,6 +10,7 @@ class Player
     @name = settings_hsh[:name]
   end
 end
+
 #-------------------
 # Computer Player
 #-------------------
@@ -26,6 +28,7 @@ class Computer < Player
   def choose_move(board, winning_lines)
     choice = nil
     sequence = [ 5, 1, 3, 7, 9, 2, 4, 6, 8]
+    sequence = [ 5, 9, 3, 7, 1, 2, 4, 6, 8] if board.get_cell(6).mark == @other_mark || board.get_cell(8).mark == @other_mark
     # This part checks for any winning moves
     sequence.each do |position|
         cell = board.get_cell(position)
