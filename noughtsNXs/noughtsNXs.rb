@@ -23,7 +23,7 @@ end
 class Player
   attr_reader :x_or_o, :name
   def initialize(settings_hsh)
-    @x_or_o = settings_hsh[:x_or_o]
+    @x_or_o = settings_hsh[:x_or_o] #fetch
     @name = settings_hsh[:name]
   end
 end
@@ -34,13 +34,16 @@ end
 class Board
   attr_accessor :grid
   attr_reader :turn_count
+#
   def initialize(save = {})
-    @grid = save.fetch(:grid, default_grid)
+    @grid = save.fetch(:grid, default_grid) #
     @turn_count = 0
   end
+
   def default_grid
     Array.new(3) { Array.new(3) {Cell.new}}
   end
+
   def get_cell(position)
     x_val=position%3-1
     y_val=(position-1)/3
@@ -218,4 +221,4 @@ class Game
   end
 end
 
-Game.new
+Game.new #.nexturn

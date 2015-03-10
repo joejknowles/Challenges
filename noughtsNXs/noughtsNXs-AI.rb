@@ -1,65 +1,13 @@
 
-
-
+require './computer'
 require 'ox'
+require './board'
 
-#-------------------
-# CELL
-#-------------------
-
-class Cell
-  attr_accessor :mark
-  def initialize(mark = " ")
-    @mark = mark
-  end
-  def to_s
-    @mark
-  end
-end
-
-#-------------------
-# PLAYER
-#-------------------
-class Player
-  attr_reader :x_or_o, :name
-  def initialize(settings_hsh)
-    @x_or_o = settings_hsh[:x_or_o]
-    @name = settings_hsh[:name]
-  end
-end
-
-#-------------------
-# BOARD
-#-------------------
-class Board
-  attr_accessor :grid
-  attr_reader :turn_count
-  def initialize(save = {})
-    @grid = save.fetch(:grid, default_grid)
-    @turn_count = 0
-  end
-  def default_grid
-    Array.new(3) { Array.new(3) {Cell.new}}
-  end
-  def get_cell(position)
-    x_val=position%3-1
-    y_val=(position-1)/3
-    @grid[y_val][x_val]
-  end
-
-  def mark_cell(position, x_or_o)
-    unless get_cell(position).mark == ' '
-      puts "Oops. That square's taken, try another one!"
-      return nil
-    end
-    @turn_count += 1
-    get_cell(position).mark = x_or_o
-  end
-end
 #-------------------
 # GAME
 #-------------------
 class Game
+
   def initialize
     @current_player, @other_player, save = start_game
     @board = Board.new(save)
@@ -87,26 +35,24 @@ class Game
     puts "Please enter your name then press enter."
      #Weird running .shuffle first here?
     name_one = get_input ###################
-    name_two = ['Hal 9000', 'Skynet'].sample
+    name_two = ['Hal 9000', 'Skynet', 'Cortana', 'kitt', 'Bender', 'GLaDOS', 'GLaDOS', 'GLaDOS', "Her"].sample
     x_or_o = ["X", "O"].shuffle
     player_one, player_two = [Player.new({name: name_one, x_or_o: x_or_o[0]}), Computer.new({name: name_two, x_or_o: x_or_o[1]})].shuffle
     [player_one, player_two, save]
   end
 
   def next_turn
-    name = @current_player.name
-    x_or_o = @current_player.x_or_o
-    print_board
-    puts "Hey, #{name}, it's your turn, you're '#{x_or_o}'s. Put your '#{x_or_o}' down on the board by choosing a number between 1 and 9. (Type 'help' or 'options' for a list of options)."
+    print_board ################## Local variables removed as not necessary
+    puts "Hey, #{@current_player.name}, it's your turn, you're '#{@current_player.x_or_o}'s. Put your '#{@current_player.x_or_o}' down on the board by choosing a number between 1 and 9. (Type 'help' or 'options' for a list of options)."
     @current_player.is_a?(Computer) ? position = @current_player.choose_move(@board) : position = get_input.to_i
-    next_turn unless @board.mark_cell(position, x_or_o)
+    next_turn unless @board.mark_cell(position, @current_player.x_or_o)
     check_end
     switch_player
     next_turn
   end
 
   def help
-    35.times{print"#"}
+    35.times{print"#"}################# method
     print "HELP"
     35.times{print"#"}
     puts ""
@@ -123,10 +69,11 @@ class Game
     @current_player, @other_player = @other_player, @current_player
   end
 
-  def get_input
+  def get_input########new class
     print '>> '
     input = gets.chomp
     check_input = input.downcase
+    #######case nested in if
     if check_input == 'grid' || check_input == 'key' || check_input == 'rules'
       puts "Just enter a number to put your mark in these places:"
       print_layout
@@ -143,6 +90,7 @@ class Game
       check_end
       next_turn
     end
+
     input
   end
 
@@ -164,21 +112,25 @@ class Game
       print "\n"
     end
   end
+
   def check_end
     x_or_o = @current_player.x_or_o
     end_win if @board.grid.any? {|row| row.all?{ |mark| mark.to_s == x_or_o}} || @board.grid.transpose.any? {|row| row.all?{ |mark| mark.to_s == x_or_o}} || @board.grid.each_with_index.map{|row, index| row[index]}.all?{ |mark| mark.to_s == x_or_o}  || @board.grid.each_with_index.map{|row, index| row[2-index]}.all?{ |mark| mark.to_s == x_or_o}
     end_draw if @board.turn_count == 9
   end
+
   def end_win
     print_board
     puts "WOW, #{@current_player.name}, you actually won."
     end_game
   end
+
   def end_draw
     print_board
     puts "Looks like this one's a draw."
     end_game
   end
+
   def end_game
     puts "Would you like to play again? y/n"
     print '>> '
@@ -201,6 +153,7 @@ class Game
     puts "Your game has been successfully saved."
     end_game
   end
+
   def load_game
     puts "Choose from one of your save files by typing the number:"
     all_save_files = Dir['./game_saves/*.xml']
@@ -215,51 +168,8 @@ class Game
     File.open(game_save, 'r'){|file| game_save_xml = file.read}
     Ox.parse_obj(game_save_xml).next_turn
   end
-end
 
-#-------------------
-# Computer Player
-#-------------------
-
-class Computer < Player
-  def choose_move(board)
-    choice = 0
-    [5, 1, 3, 7, 9,2, 4, 6, 8].each do |position|
-      if position % 2 == 1 && board.get_cell(position).mark == ' ' && (((board.grid.each_with_index.map{|row, index| row[index]}.count{ |mark| mark.to_s == @x_or_o} == 2) && (position == 1 || position == 9)) || ((board.grid.each_with_index.map{|row, index| row[2-index]}.count{ |mark| mark.to_s == @x_or_o} == 2) && (position == 3 || position == 7)))
-        puts 1
-        choice = position
-        break
-      elsif board.get_cell(position).mark == ' ' && ((board.grid[(position -1) / 3].count{|mark| mark.to_s == @x_or_o} == 2) || (board.grid.transpose[(position -1) % 3].count{|mark| mark.to_s == @x_or_o} == 2) )
-        puts 2
-        choice = position
-        break
-      end
-    end
-    if choice == 0
-      [5, 1, 3, 7, 9, 2, 4, 6, 8].each do |position|
-        if position % 2 == 1 && board.get_cell(position).mark == ' '    && ((board.grid.each_with_index.map{|row, index| row[index]}.any?{ |mark| mark.to_s == @x_or_o} && (position == 1 || position == 9) && (board.grid.each_with_index.map{|row, index| row[index]}.count{|mark| mark.to_s == ' '} == 2)) || (board.grid.each_with_index.map{|row, index| row[2-index]}.any?{ |mark| mark.to_s == @x_or_o} && (position == 3 || position == 7) && (board.grid.each_with_index.map{|row, index| row[2-index]}.count{|mark| mark.to_s == ' '} == 2)))
-          puts 3
-        choice = position
-        break
-        elsif board.get_cell(position).mark == ' ' && (board.grid[(position -1) / 3].any?{|mark| mark.to_s == @x_or_o} || board.grid.transpose[(position -1) % 3].any?{|mark| mark.to_s == @x_or_o}  ) && ((board.grid[(position -1) / 3].count{|mark| mark.to_s == ' '} == 2) || (board.grid.transpose[(position -1) % 3].count{|mark| mark.to_s == ' '} == 2) )
-          puts 4
-          choice = position
-          break
-        end
-      end
-    end
-    if choice == 0
-      [5, 1, 3, 7, 9, 2, 4, 6, 8].each do |position|
-        if board.get_cell(position).mark ==' '
-          puts 5
-          choice = position
-          break
-        end
-      end
-    end
-    choice
-  end
 end
 
 
-Game.new
+Game.new #.next_turn
