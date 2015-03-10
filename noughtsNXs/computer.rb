@@ -25,39 +25,41 @@ class Computer < Player
 
   def choose_move(board, winning_lines)
     choice = nil
-    p relevant_lines(board.get_cell(5), winning_lines)
-
-
+    sequence = [ 5, 1, 3, 7, 9, 2, 4, 6, 8]
     # This part checks for any winning moves
-    [ 5, 1, 3, 7, 9, 2, 4, 6, 8].each do |position|
-      cell = board.get_cell(position)
-      if cell.to_s == ' ' && relevant_lines(cell, winning_lines).any?{ |line| line.count{ |mark| mark.to_s == @x_or_o} == 2}
-        puts 1
-        choice = position
-        break
+    sequence.each do |position|
+        cell = board.get_cell(position)
+        if cell.to_s == ' ' && relevant_lines(cell, winning_lines).any?{ |line| line.count{ |mark| mark.to_s == @x_or_o} == 2}
+          puts 2
+          choice = position
+          break
+        end
+      end
+    #makes sure they're not about to win!
+    unless choice
+      sequence.each do |position|
+        cell = board.get_cell(position)
+        if cell.to_s == ' ' && relevant_lines(cell, winning_lines).any?{ |line| line.count{ |mark| mark.to_s == @other_mark} == 2}
+          puts 1
+          choice = position
+          break
+        end
       end
     end
-
     # checks for any line with one of own mark and two blanks
     unless choice
-
-      #diags
-      # [5, 1, 3, 7, 9, 2, 4, 6, 8].each do |position|
-      #   if position % 2 == 1 && board.get_cell(position).mark == ' '    && ((board.grid.each_with_index.map{|row, index| row[index]}.any?{ |mark| mark.to_s == @x_or_o} && (position == 1 || position == 9) && (board.grid.each_with_index.map{|row, index| row[index]}.count{|mark| mark.to_s == ' '} == 2)) || (board.grid.each_with_index.map{|row, index| row[2-index]}.any?{ |mark| mark.to_s == @x_or_o} && (position == 3 || position == 7) && (board.grid.each_with_index.map{|row, index| row[2-index]}.count{|mark| mark.to_s == ' '} == 2)))
-      #     puts 3
-      #   choice = position
-      #   break
-      #   #hor vert
-      #   elsif board.get_cell(position).mark == ' ' && (board.grid[(position -1) / 3].any?{|mark| mark.to_s == @x_or_o} || board.grid.transpose[(position -1) % 3].any?{|mark| mark.to_s == @x_or_o}  ) && ((board.grid[(position -1) / 3].count{|mark| mark.to_s == ' '} == 2) || (board.grid.transpose[(position -1) % 3].count{|mark| mark.to_s == ' '} == 2) )
-      #     puts 4
-      #     choice = position
-      #     break
-      #   end
-      # end
+        sequence.each do |position|
+        cell = board.get_cell(position)
+        if cell.to_s == ' ' && relevant_lines(cell, winning_lines).any?{ |line| line.any?{ |mark| mark.to_s == @x_or_o} && line.count{ |mark| mark.to_s == ' '} == 2}
+          puts 3
+          choice = position
+          break
+        end
+      end
     end
     #none of above follows this simple routine
     unless choice
-      [5, 1, 3, 7, 9, 2, 4, 6, 8].each do |position|
+      sequence.each do |position|
         if board.get_cell(position).mark ==' '
           puts 5
           choice = position
