@@ -10,7 +10,7 @@ class Game
 
   def initialize
     @current_player, @other_player, save = start_game
-    @board = Board.new(save)
+    @board = Board.new#(save)
     intro
     @begin = true
     next_turn
@@ -37,14 +37,14 @@ class Game
     name_one = get_input ###################
     name_two = ['Hal 9000', 'Skynet', 'Cortana', 'kitt', 'Bender', 'GLaDOS', 'GLaDOS', 'GLaDOS', "Her"].sample
     x_or_o = ["X", "O"].shuffle
-    player_one, player_two = [Player.new({name: name_one, x_or_o: x_or_o[0]}), Computer.new({name: name_two, x_or_o: x_or_o[1]})].shuffle
+    player_one, player_two = [Player.new({name: name_one, x_or_o: x_or_o[0]}), Computer.new({name: name_two, x_or_o: x_or_o[1], other_mark: x_or_o[0]})].shuffle
     [player_one, player_two, save]
   end
 
   def next_turn
     print_board ################## Local variables removed as not necessary
     puts "Hey, #{@current_player.name}, it's your turn, you're '#{@current_player.x_or_o}'s. Put your '#{@current_player.x_or_o}' down on the board by choosing a number between 1 and 9. (Type 'help' or 'options' for a list of options)."
-    @current_player.is_a?(Computer) ? position = @current_player.choose_move(@board) : position = get_input.to_i
+    @current_player.is_a?(Computer) ? position = @current_player.choose_move(@board, winning_lines) : position = get_input.to_i
     next_turn unless @board.mark_cell(position, @current_player.x_or_o)
     check_end
     switch_player
@@ -115,8 +115,15 @@ class Game
 
   def check_end
     x_or_o = @current_player.x_or_o
-    end_win if @board.grid.any? {|row| row.all?{ |mark| mark.to_s == x_or_o}} || @board.grid.transpose.any? {|row| row.all?{ |mark| mark.to_s == x_or_o}} || @board.grid.each_with_index.map{|row, index| row[index]}.all?{ |mark| mark.to_s == x_or_o}  || @board.grid.each_with_index.map{|row, index| row[2-index]}.all?{ |mark| mark.to_s == x_or_o}
+    end_win if winning_lines.any? {|row| row.all?{ |mark| mark.to_s == x_or_o}}
     end_draw if @board.turn_count == 9
+  end
+
+  def winning_lines
+    lines = @board.grid.clone
+    @board.grid.transpose.each{|row| lines << row}
+    lines << @board.grid.each_with_index.map{|row, index| row[index]}
+    lines << @board.grid.each_with_index.map{|row, index| row[2 - index]}
   end
 
   def end_win

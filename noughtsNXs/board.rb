@@ -21,8 +21,8 @@ class Board
   attr_accessor :grid
   attr_reader :turn_count
 
-  def initialize(save = {})
-    @grid = save.fetch(:grid, default_grid)
+  def initialize #(save = {})
+    @grid = default_grid  #save.fetch(:grid, default_grid)
     @turn_count = 0
   end
 
@@ -45,12 +45,6 @@ class Board
     get_cell(position).mark = x_or_o
   end
 
-  def winning_lines
-    lines = @grid.clone
-    @grid.transpose.each{|row| lines << row}
 
-    lines << @grid.each_with_index.map{|row, index| row[index]}
-    lines << @grid.each_with_index.map{|row, index| row[2 - index]}
-  end
 
 end
