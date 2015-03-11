@@ -28,7 +28,11 @@ class Computer < Player
 
   def choose_move(board, winning_lines)
     choice = nil
-    sequence = [ 5, 1, 3, 7, 9, 2, 4, 6, 8]
+    sequence=[]
+  30.times {sequence << 5}#60 better
+  7.times {[3,1,9,7].each{|num|sequence << num }}
+  [2,4,6,8].each{|num|sequence << num }
+  sequence = sequence.shuffle.uniq
     # 4 tactical changes of plan
     sequence = [ 5, 9, 3, 7, 1, 2, 4, 6, 8] if board.get_cell(6).mark == @other_mark || board.get_cell(8).mark == @other_mark
     sequence = [ 5, 9, 7, 3, 1, 2, 4, 6, 8] if board.get_cell(9).mark == @other_mark && board.get_cell(4).mark == @other_mark
