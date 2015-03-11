@@ -1,0 +1,49 @@
+<o c="Game">
+  <o a="@current_player" c="Player">
+    <s a="@x_or_o">X</s>
+    <s a="@name">Joe the Master of Time</s>
+  </o>
+  <o a="@other_player" c="Player">
+    <s a="@x_or_o">O</s>
+    <s a="@name">just Joe</s>
+  </o>
+  <o a="@board" c="Board">
+    <a a="@grid">
+      <a>
+        <o c="Cell">
+          <s a="@mark">O</s>
+        </o>
+        <o c="Cell">
+          <s a="@mark">X</s>
+        </o>
+        <o c="Cell">
+          <s a="@mark">O</s>
+        </o>
+      </a>
+      <a>
+        <o c="Cell">
+          <s a="@mark">O</s>
+        </o>
+        <o c="Cell">
+          <s a="@mark">X</s>
+        </o>
+        <o c="Cell">
+          <s a="@mark"> </s>
+        </o>
+      </a>
+      <a>
+        <o c="Cell">
+          <s a="@mark"> </s>
+        </o>
+        <o c="Cell">
+          <s a="@mark"> </s>
+        </o>
+        <o c="Cell">
+          <s a="@mark"> </s>
+        </o>
+      </a>
+    </a>
+    <i a="@turn_count">5</i>
+  </o>
+  <y a="@begin"/>
+</o>
