@@ -192,7 +192,6 @@ class GameSave
 
 end
 
-
 class Input # Unused class in development
   def initialize(save_settings = {})
     @save_settings = save_settings # Envision using one for each question and making a new one each time I ask a new question
@@ -222,7 +221,6 @@ class Input # Unused class in development
     end
   end
 end
-
 
 
 Game.new #.next_turn
