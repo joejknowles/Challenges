@@ -80,7 +80,7 @@ class Game
     elsif @begin && (check_input == 'help' || check_input == 'options')
       help
     elsif @begin && check_input == 'save'
-      GameSave.new(self, file_name).save_game
+      GameSave.new({game_data: self, file_name: file_name}).save_game
       end_game
     elsif @begin && check_input!= 'y' && check_input!= 'n' && (input.to_i > 9 || input.to_i < 1)
       puts "I don't understand that! Try again"
@@ -164,9 +164,9 @@ end
 
 class GameSave
 
-  def initialize(game_data=nil, file_name=nil)
-    @game_data = game_data
-    @file_name = file_name
+  def initialize(settings_hsh = {})
+    @game_data = settings_hsh.fetch(:game_data, nil)
+    @file_name = settings_hsh.fetch(:file_name, nil)
     @all_save_files = Dir['./game_saves/*.xml']
   end
 
@@ -193,20 +193,35 @@ class GameSave
 end
 
 
-class Input
+class Input # Unused class in development
+  def initialize(save_settings = {})
+    @save_settings = save_settings # Envision using one for each question and making a new one each time I ask a new question
+  end
 
-
-
-
-
-
-
-
-
-
-
-
-
+  def get_input
+    print '>> '
+    response = nil
+    input = gets.chomp
+    check_input = input.downcase
+    if check_input == 'grid' || check_input == 'key' || check_input == 'rules'
+      puts "Just enter a number to put your mark in these places:"
+      print_layout
+      check_end
+      next_turn
+    elsif check_input == 'exit' || check_input == 'quit'
+      end_game
+    elsif @begin && (check_input == 'help' || check_input == 'options')
+      help
+    elsif @begin && check_input == 'save'
+      GameSave.new(@save_settings).save_game ### Needs moving to Game
+      end_game
+    elsif @begin && check_input!= 'y' && check_input!= 'n' && (input.to_i > 9 || input.to_i < 1)
+      puts "I don't understand that! Try again"
+      check_end
+      next_turn
+    end
+  end
+end
 
 
 

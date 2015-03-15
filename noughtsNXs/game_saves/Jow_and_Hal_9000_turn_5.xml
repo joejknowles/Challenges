@@ -1,24 +1,24 @@
 <o c="Game">
   <o a="@current_player" c="Player">
-    <s a="@x_or_o">O</s>
-    <s a="@name">Joe</s>
+    <s a="@x_or_o">X</s>
+    <s a="@name">Jow</s>
   </o>
   <o a="@other_player" c="Computer">
-    <s a="@x_or_o">X</s>
+    <s a="@x_or_o">O</s>
     <s a="@name">Hal 9000</s>
-    <s a="@other_mark">O</s>
+    <s a="@other_mark">X</s>
   </o>
   <o a="@board" c="Board">
     <a a="@grid">
       <a>
         <o c="Cell">
-          <s a="@mark"> </s>
-        </o>
-        <o c="Cell">
-          <s a="@mark"> </s>
+          <s a="@mark">X</s>
         </o>
         <o c="Cell">
           <s a="@mark">X</s>
+        </o>
+        <o c="Cell">
+          <s a="@mark">O</s>
         </o>
       </a>
       <a>
@@ -26,7 +26,7 @@
           <s a="@mark"> </s>
         </o>
         <o c="Cell">
-          <s a="@mark"> </s>
+          <s a="@mark">O</s>
         </o>
         <o c="Cell">
           <s a="@mark"> </s>
@@ -44,7 +44,7 @@
         </o>
       </a>
     </a>
-    <i a="@turn_count">1</i>
+    <i a="@turn_count">4</i>
   </o>
   <y a="@begin"/>
 </o>
